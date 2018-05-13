@@ -334,8 +334,8 @@ public class WAVLTree {
      * Example 3: select(2) returns the value 2nd smallest minimal node, i.e the value of the node minimal node's successor
      */
     public String select(int i) {
-        if (i > size()) {
-            return "-1";
+        if (i < 0 || i > size()) {
+            return null;
         }
 
         WAVLNode node = this.minNode;
