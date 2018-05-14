@@ -175,19 +175,20 @@ public class WAVLTree {
         WAVLNode successor = getSuccessor(nodeToDelete);
 
         WAVLNode parent = successor.getParent();
-        WAVLNode child = successor.getRight() == null ? successor.getLeft() : successor.getRight();
         if (isLeaf(successor)) {
             replaceUnaryNode(parent, successor, EXTERNAL_NODE);
         } else {
+            WAVLNode child = successor.getRight() == EXTERNAL_NODE ? successor.getLeft() : successor.getRight();
             replaceUnaryNode(parent, successor, child);
         }
 
-        successor.rank = nodeToDelete.rank;
+        successor.rank = nodeToDelete.getRank();
         successor.setParent(nodeToDelete.getParent());
         successor.setRight(nodeToDelete.getRight());
         successor.setLeft(nodeToDelete.getLeft());
 
-        if (parent == nodeToDelete && !isLeaf(child)) {
+        if (parent == nodeToDelete && !isLegalState(successor)) {
+            WAVLNode child = successor.getRight() == EXTERNAL_NODE ? successor.getLeft() : successor.getRight();
             return singleRotate(successor, child) + 1;
         }
         return deleteBalanceTree(parent);

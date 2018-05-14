@@ -1,9 +1,6 @@
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Created by Yoav on 14/05/2018.
- */
 public class TestWavlTree {
     @Test
     public void test1() {
