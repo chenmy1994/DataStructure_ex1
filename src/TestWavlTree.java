@@ -141,4 +141,60 @@ public class TestWavlTree {
         Assert.assertEquals(3, tree.size());
     }
 
+    @Test
+    public void test13() {
+        WAVLTree tree = new WAVLTree();
+        tree.delete(2573);
+        tree.insert(7464, "a");
+        tree.insert(5094, "b");
+        tree.insert(5508, "c");
+        tree.insert(7464, "d");
+        tree.insert(5798, "e");
+        tree.delete(5508);
+        tree.delete(5094);
+    }
+
+    @Test
+    public void test14() {
+        WAVLTree tree = new WAVLTree();
+        tree.insert(5628, "a");
+        tree.delete(5628);
+        Assert.assertTrue(tree.empty());
+    }
+
+    @Test
+    public void test15() {
+        WAVLTree tree = new WAVLTree();
+        tree.insert(1234, "a");
+        tree.insert(1466, "b");
+        tree.insert(1435, "c");
+        tree.delete(1234);
+        tree.delete(1435);
+        tree.delete(1466);
+        Assert.assertTrue(tree.empty());
+    }
+
+    @Test
+    public void test16() {
+        WAVLTree tree = new WAVLTree();
+        tree.insert(5366, "a");
+        tree.insert(2197, "b");
+        tree.delete(1363);
+        tree.insert(3414, "c");
+        tree.insert(5835, "d");
+        tree.insert(4805, "e");
+
+        Assert.assertEquals(2, tree.getRoot().getRank());
+        Assert.assertEquals(1, tree.getRoot().getRight().getRank());
+        Assert.assertEquals(0, tree.getRoot().getLeft().getRank());
+        Assert.assertEquals(0, tree.getRoot().getRight().getRight().getRank());
+        Assert.assertEquals(0, tree.getRoot().getRight().getLeft().getRank());
+
+        Assert.assertEquals(5, tree.getRoot().getSubtreeSize());
+        Assert.assertEquals(3, tree.getRoot().getRight().getSubtreeSize());
+        Assert.assertEquals(1, tree.getRoot().getLeft().getSubtreeSize());
+        Assert.assertEquals(1, tree.getRoot().getRight().getRight().getSubtreeSize());
+        Assert.assertEquals(1, tree.getRoot().getRight().getLeft().getSubtreeSize());
+    }
+
 }

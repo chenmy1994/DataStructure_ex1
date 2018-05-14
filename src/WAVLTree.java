@@ -20,7 +20,7 @@ public class WAVLTree {
         this.EXTERNAL_NODE.rank = -1;
         this.EXTERNAL_NODE.subTreeSize = 0;
 
-        this.root = this.EXTERNAL_NODE;
+        this.root = null;
         this.minNode = null;
         this.maxNode = null;
         this.treeSize = 0;
@@ -32,7 +32,7 @@ public class WAVLTree {
      * returns true if and only if the tree is empty
      */
     public boolean empty() {
-        return this.root == this.EXTERNAL_NODE;
+        return this.getRoot() == null;
     }
 
     /**
@@ -71,9 +71,9 @@ public class WAVLTree {
         ++this.treeSize;
         WAVLNode newNode = new WAVLNode(k, i);
         if (empty()) {
-            this.root = newNode;
-            this.maxNode = this.root;
-            this.minNode = this.root;
+            this.setRoot(newNode);
+            this.maxNode = this.getRoot();
+            this.minNode = this.getRoot();
             return 0;
         }
 
@@ -127,11 +127,37 @@ public class WAVLTree {
 
         --this.treeSize;
 
+        if (!isLeaf(nodeToDelete) && !isUnary(nodeToDelete)) {
+            WAVLNode successor = getSuccessor(nodeToDelete);
+
+            WAVLNode parent = successor.getParent();
+            WAVLNode child = successor.getRight() == EXTERNAL_NODE ? successor.getLeft() : successor.getRight();
+            if (isLeaf(successor)) {
+                replaceUnaryNode(parent, successor, EXTERNAL_NODE);
+            } else {
+                replaceUnaryNode(parent, successor, child);
+            }
+
+            successor.rank = nodeToDelete.getRank();
+            successor.setParent(nodeToDelete.getParent());
+            successor.setRight(nodeToDelete.getRight());
+            successor.setLeft(nodeToDelete.getLeft());
+
+            if (child != EXTERNAL_NODE) {
+                replaceUnaryNode(child, EXTERNAL_NODE, nodeToDelete);
+            } else {
+                replaceUnaryNode(parent, EXTERNAL_NODE, nodeToDelete);
+            }
+            nodeToDelete.setLeft(EXTERNAL_NODE);
+            nodeToDelete.setRight(EXTERNAL_NODE);
+
+        }
+
         if (isLeaf(nodeToDelete)) {
             WAVLNode parent = nodeToDelete.getParent();
 
             if (parent == null) {
-                this.root = null;
+                this.setRoot(null);
                 return 0;
             }
 
@@ -159,7 +185,7 @@ public class WAVLTree {
             WAVLNode parent = nodeToDelete.getParent();
 
             if (parent == null) {
-                this.root = child;
+                setRoot(child);
                 return 0;
             }
 
@@ -172,26 +198,15 @@ public class WAVLTree {
             return deleteBalanceTree(parent);
         }
 
-        WAVLNode successor = getSuccessor(nodeToDelete);
+        // Unreachable
+        throw new RuntimeException();
+    }
 
-        WAVLNode parent = successor.getParent();
-        if (isLeaf(successor)) {
-            replaceUnaryNode(parent, successor, EXTERNAL_NODE);
-        } else {
-            WAVLNode child = successor.getRight() == EXTERNAL_NODE ? successor.getLeft() : successor.getRight();
-            replaceUnaryNode(parent, successor, child);
+    private void setRoot(WAVLNode node) {
+        this.root = node;
+        if (node != null) {
+            node.setParent(null);
         }
-
-        successor.rank = nodeToDelete.getRank();
-        successor.setParent(nodeToDelete.getParent());
-        successor.setRight(nodeToDelete.getRight());
-        successor.setLeft(nodeToDelete.getLeft());
-
-        if (parent == nodeToDelete && !isLegalState(successor)) {
-            WAVLNode child = successor.getRight() == EXTERNAL_NODE ? successor.getLeft() : successor.getRight();
-            return singleRotate(successor, child);
-        }
-        return deleteBalanceTree(parent);
     }
 
 
@@ -327,7 +342,7 @@ public class WAVLTree {
         }
 
         int[] arr = new int[this.size()];
-        inOrderKey(this.root, arr, 0);
+        inOrderKey(this.getRoot(), arr, 0);
         return arr;
     }
 
@@ -344,7 +359,7 @@ public class WAVLTree {
         }
 
         String[] arr = new String[this.size()];
-        inOrderInfo(this.root, arr, 0);
+        inOrderInfo(this.getRoot(), arr, 0);
         return arr;
     }
 
@@ -429,7 +444,7 @@ public class WAVLTree {
             return maxNode;
         }
 
-        WAVLNode next = this.root;
+        WAVLNode next = this.getRoot();
         while (true) {
             if (next.getKey() == key) {
                 return next;
