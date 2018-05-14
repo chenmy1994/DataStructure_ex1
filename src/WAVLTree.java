@@ -150,7 +150,7 @@ public class WAVLTree {
             removeLeaf(parent, nodeToDelete);
 
             if (!isLeaf(otherChild)) {
-                return singleRotate(parent, otherChild) + 1;
+                return singleRotate(parent, otherChild);
             }
 
             return deleteBalanceTree(parent);
@@ -189,7 +189,7 @@ public class WAVLTree {
 
         if (parent == nodeToDelete && !isLegalState(successor)) {
             WAVLNode child = successor.getRight() == EXTERNAL_NODE ? successor.getLeft() : successor.getRight();
-            return singleRotate(successor, child) + 1;
+            return singleRotate(successor, child);
         }
         return deleteBalanceTree(parent);
     }
@@ -469,16 +469,16 @@ public class WAVLTree {
 
         if (node.getParent().getRight() == otherChild) {
             if (otherChild.getRank() - otherChild.getRight().getRank() == 2) {
-                return 2 + doubleRotate(node.getParent(), otherChild);
+                return doubleRotate(node.getParent(), otherChild);
             }
 
-            return 1 + singleRotate(node.getParent(), otherChild);
+            return singleRotate(node.getParent(), otherChild);
         } else {
             if (otherChild.getRank() - otherChild.getLeft().getRank() == 2) {
-                return 2 + doubleRotate(node.getParent(), otherChild);
+                return doubleRotate(node.getParent(), otherChild);
             }
 
-            return 1 + singleRotate(node.getParent(), otherChild);
+            return singleRotate(node.getParent(), otherChild);
         }
     }
 
@@ -527,22 +527,22 @@ public class WAVLTree {
 
         if (rightChildDiff == 0) {
             if (node.getRight().getRank() - node.getRight().getLeft().getRank() == 2) {
-                return 1 + singleRotate(node, node.getRight());
+                return singleRotate(node, node.getRight());
             } else {
-                return 2 + doubleRotate(node, node.getRight());
+                return doubleRotate(node, node.getRight());
             }
         } else {
             if (node.getLeft().getRank() - node.getLeft().getRight().getRank() == 2) {
-                return 1 + singleRotate(node, node.getLeft());
+                return singleRotate(node, node.getLeft());
             } else {
-                return 2 + doubleRotate(node, node.getLeft());
+                return doubleRotate(node, node.getLeft());
             }
         }
     }
 
 
     private int singleRotate(WAVLNode parent, WAVLNode child) {
-        int rankChanges = 0;
+        int actionCount = 1;
         WAVLNode grandParent = parent.getParent();
         if (grandParent == null) {
             child.setParent(null);
@@ -553,7 +553,7 @@ public class WAVLTree {
                 grandParent.setLeft(child);
             }
             ++child.rank;
-            ++rankChanges;
+            ++actionCount;
         }
 
         WAVLNode grandChild;
@@ -567,26 +567,26 @@ public class WAVLTree {
             parent.setLeft(grandChild);
         }
         --parent.rank;
-        ++rankChanges;
+        ++actionCount;
 
         grandChild.calculateSize();
         parent.calculateSize();
         child.calculateSize();
 
-        return rankChanges;
+        return actionCount;
     }
 
 
     private int doubleRotate(WAVLNode grandParent, WAVLNode parent) {
-        int rankChanges = 0;
+        int actionCount = 0;
         if (grandParent.getRight() == parent) {
-            rankChanges += singleRotate(parent, parent.getLeft());
-            rankChanges += singleRotate(grandParent, grandParent.getRight());
+            actionCount += singleRotate(parent, parent.getLeft());
+            actionCount += singleRotate(grandParent, grandParent.getRight());
         } else {
-            rankChanges += singleRotate(parent, parent.getRight());
-            rankChanges += singleRotate(grandParent, grandParent.getLeft());
+            actionCount += singleRotate(parent, parent.getRight());
+            actionCount += singleRotate(grandParent, grandParent.getLeft());
         }
-        return rankChanges;
+        return actionCount;
     }
 
     /**
