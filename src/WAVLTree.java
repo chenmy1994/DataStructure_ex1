@@ -194,7 +194,7 @@ public class WAVLTree {
             if (otherChild == EXTERNAL_NODE) {
                 removeLeaf(parent, nodeToDelete);
                 --parent.rank;
-                return deleteBalanceTree(EXTERNAL_NODE) + 1;
+                return deleteBalanceTree(parent) + 1;
             }
 
             removeLeaf(parent, nodeToDelete);
@@ -535,13 +535,16 @@ public class WAVLTree {
     }
 
     private boolean isLegalState(WAVLNode node) {
-        if (empty() || node == null || this.getRoot() == node) {
+        if (empty() || node == null) {
             return true;
         }
 
-        WAVLNode parent = node.getParent();
-        int leftChildDiff = parent.getRank() - parent.getLeft().getRank();
-        int rightChildDiff = parent.getRank() - parent.getRight().getRank();
+        if (this.getRoot() != node) {
+            node = node.getParent();
+        }
+
+        int leftChildDiff = node.getRank() - node.getLeft().getRank();
+        int rightChildDiff = node.getRank() - node.getRight().getRank();
 
         return leftChildDiff > 0 && rightChildDiff > 0 && leftChildDiff < 3 & rightChildDiff < 3;
     }
@@ -619,6 +622,29 @@ public class WAVLTree {
 
         return actionCount;
     }
+//
+//    private int setRanks(WAVLNode parent, WAVLNode child) {
+//        int minRank = Math.max(parent.getRight().getRank(), parent.getLeft().getRank()) + 1;
+//
+//        int minRank2 = minRank + 1;
+//        int maxRank2 = minRank + 3;
+//
+//        if (child.getParent() != null) {
+//            maxRank2 = Math.min(maxRank2, child.getParent().getRank() - 1);
+//        }
+//
+//        for (int i = 0; i < 2; i++) {
+//            int rank = minRank + i;
+//            for (int j = 1; j < 3; j++) {
+//                if (rank + j > minRank2 && rank + j < maxRank2) {
+//                    parent.rank = rank;
+//                    child.rank = rank + j;
+//                    return 2;
+//                }
+//            }
+//        }
+//        return 0;
+//    }
 
 
     private int doubleRotate(WAVLNode grandParent, WAVLNode parent) {

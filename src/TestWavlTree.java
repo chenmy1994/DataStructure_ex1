@@ -64,7 +64,7 @@ public class TestWavlTree {
         tree.insert(2476, "b");
         tree.insert(2535, "c");
         Assert.assertEquals(3, tree.size());
-        Assert.assertEquals(1, tree.getRoot().getRank());
+        Assert.assertEquals(2, tree.getRoot().getRank());
         Assert.assertEquals(0, tree.getRoot().getRight().getRank());
         Assert.assertEquals(0, tree.getRoot().getLeft().getRank());
     }
@@ -293,15 +293,98 @@ public class TestWavlTree {
         tree.insert(4889, "");
         tree.insert(8332, "");
         tree.insert(6879, "");
-        System.out.println(WAVLTreePrinter.toString(tree));
         tree.delete(6959);
 
-        System.out.println(WAVLTreePrinter.toString(tree));
 
         assertNodeSize(tree.getRoot());
-        Assert.assertEquals(2, tree.getRoot().getRank());
+        Assert.assertEquals(1, tree.getRoot().getRank());
         Assert.assertEquals(0, tree.getRoot().getRight().getRank());
         Assert.assertEquals(0, tree.getRoot().getLeft().getRank());
     }
 
+    @Test
+    public void test21() {
+        WAVLTree tree = new WAVLTree();
+        tree.insert(3188, "");
+        tree.insert(5525, "");
+        tree.insert(5783, "");
+        tree.insert(4176, "");
+        tree.insert(4486, "");
+        tree.delete(5783);
+        tree.delete(4486);
+        tree.insert(3669, "");
+        tree.delete(4176);
+        tree.insert(5176, "");
+        tree.insert(530, "");
+        tree.delete(3669);
+        tree.insert(2496, "");
+        tree.delete(530);
+        tree.insert(1993, "");
+        tree.insert(6587, "");
+        tree.insert(3926, "");
+        tree.delete(1993);
+        tree.delete(5176);
+
+
+        assertNodeSize(tree.getRoot());
+        Assert.assertEquals(2, tree.getRoot().getRank());
+        Assert.assertEquals(0, tree.getRoot().getRight().getRank());
+        Assert.assertEquals(1, tree.getRoot().getLeft().getRank());
+        Assert.assertEquals(0, tree.getRoot().getLeft().getRight().getRank());
+        Assert.assertEquals(0, tree.getRoot().getLeft().getLeft().getRank());
+    }
+
+    @Test
+    public void test22() {
+        WAVLTree tree = new WAVLTree();
+        tree.insert(1232,"");
+        tree.insert(1801,"");
+        tree.insert(732,"");
+        tree.insert(364,"");
+        tree.delete(1232);
+        tree.insert(1064,"");
+        tree.insert(271,"");
+        tree.insert(1570,"");
+        tree.insert(2373,"");
+        tree.insert(1741,"");
+        tree.insert(1374,"");
+        tree.insert(371,"");
+        tree.insert(2565,"");
+        tree.insert(1363,"");
+        tree.insert(2837,"");
+        tree.insert(1137,"");
+        tree.delete(1374);
+        tree.insert(2816,"");
+        tree.insert(1341,"");
+        tree.insert(903,"");
+        tree.insert(713,"");
+        tree.insert(994,"");
+        tree.insert(1764,"");
+        tree.insert(786,"");
+        tree.insert(12,"");
+        tree.delete(2816);
+
+
+        assertNodeSize(tree.getRoot());
+        Assert.assertEquals(2, tree.getRoot().getRank());
+        Assert.assertEquals(0, tree.getRoot().getRight().getRank());
+        Assert.assertEquals(1, tree.getRoot().getLeft().getRank());
+        Assert.assertEquals(0, tree.getRoot().getLeft().getRight().getRank());
+        Assert.assertEquals(0, tree.getRoot().getLeft().getLeft().getRank());
+    }
+
+    @Test
+    public void testSingleRotate(){
+        WAVLTree tree = new WAVLTree();
+        tree.insert(10,"");
+        tree.insert(11,"");
+        tree.insert(9,"");
+        tree.insert(13,"");
+        tree.insert(8,"");
+        tree.insert(12,"");
+        tree.insert(14,"");
+        System.out.println(WAVLTreePrinter.toString(tree));
+        tree.delete(8);
+        System.out.println(WAVLTreePrinter.toString(tree));
+    }
 }
