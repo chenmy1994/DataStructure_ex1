@@ -136,11 +136,6 @@ public class WAVLTree {
             replaceWithSuccessor(nodeToDelete);
         }
 
-//        nodeToDelete.calculateSize(); // TODO: delete?
-//        --nodeToDelete.subTreeSize;
-//        nodeToDelete.updateSubTreeSizeUp();
-
-
         if (nodeToDelete.isLeaf()) {
             if (getRoot() == nodeToDelete) {
                 this.setRoot(null);
@@ -431,7 +426,6 @@ public class WAVLTree {
 
         if (isSingleDemoteState(node)) {
             node.setRank(node.getRank() - 1);
-//            node.calculateSize(); // TODO: delete
             node.calculateSize();
             deleteBalanceTree(node.getParent());
             return;
@@ -592,9 +586,6 @@ public class WAVLTree {
 
         parent.calculateSize();
         node.calculateSize();
-//            if (grandParent != null) { // TODO: Delete?
-//                grandParent.calculateSize();
-//            }
     }
 
     private WAVLNode doubleRotate(WAVLNode grandParent, WAVLNode parent) {
