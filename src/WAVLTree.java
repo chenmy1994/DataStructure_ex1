@@ -556,7 +556,7 @@ public class WAVLTree {
     }
 
     private void singleRotate(WAVLNode parent, WAVLNode node) {
-        actionsCount.addActions(1);
+        actionsCount.addAction();
 
         if (getRoot() == parent) {
             setRoot(node);
@@ -643,7 +643,7 @@ public class WAVLTree {
 
         public void setRank(int rank) {
             this.rank = rank;
-            actionsCount.addActions(1);
+            actionsCount.addAction();
         }
 
         public int getRank() {
@@ -781,8 +781,8 @@ public class WAVLTree {
             this.count = 0;
         }
 
-        public void addActions(int value) {
-            this.count += value;
+        public void addAction() {
+            ++this.count;
         }
 
         public int getCount() {
