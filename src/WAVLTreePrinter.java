@@ -24,7 +24,7 @@ class WAVLTreePrinter {
             return Collections.singletonList("#");
         }
 
-        String thisString = byKey ? String.valueOf(node.getKey()) + " : " + node.getRank() : node.getValue();
+        String thisString = byKey ? String.valueOf(node.getKey()) + " : " + node.getRank() + " : " + node.getSubtreeSize() : node.getValue();
 
         return concatenation(repr(node.getLeft(), byKey), thisString, repr(node.getRight(), byKey));
     }
