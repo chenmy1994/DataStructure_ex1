@@ -465,6 +465,20 @@ public class TestWavlTree {
     }
 
     @Test
+    public void testSelect2() {
+        WAVLTree tree = new WAVLTree();
+        int num = 8;
+        tree.insert(num, Integer.toString(num));
+        for (int i = 1; i < num; i++) {
+            tree.insert(num + i, Integer.toString(num + i));
+            tree.insert(num - i, Integer.toString(num - i));
+        }
+        for (int i = 1; i < num * 2; i++) {
+            Assert.assertEquals(Integer.toString(i), tree.select(i));
+        }
+    }
+
+    @Test
     public void testSingleRotate() {
         WAVLTree tree = new WAVLTree();
         tree.insert(10, "");
