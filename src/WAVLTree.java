@@ -14,6 +14,9 @@ public class WAVLTree {
     private WAVLNode maxNode;
     private ActionsCount actionsCount;
 
+    /**
+     * Complexity O(1)
+     */
     public WAVLTree() {
         this.EXTERNAL_NODE = new WAVLNode(-1, "OUT_NODE");
         this.EXTERNAL_NODE.rank = -1;
@@ -30,6 +33,8 @@ public class WAVLTree {
      * public boolean empty()
      * <p>
      * returns true if and only if the tree is empty
+     * <p>
+     * Complexity O(1)
      */
     public boolean empty() {
         return this.getRoot() == null;
@@ -40,6 +45,8 @@ public class WAVLTree {
      * <p>
      * returns the info of an item with key k if it exists in the tree
      * otherwise, returns null
+     * <p>
+     * Complexity O(logn)
      */
     public String search(int k) {
         if (empty()) {
@@ -66,6 +73,9 @@ public class WAVLTree {
      * the tree must remain valid (keep its invariants).
      * returns the number of rebalancing operations, or 0 if no rebalancing operations were necessary.
      * returns -1 if an item with key k already exists in the tree.
+     * <p>
+     * Complexity W.C. O(logn)
+     * Complexity Amortized O(1)
      */
     public int insert(int k, String i) {
         this.actionsCount.clear();
@@ -94,6 +104,11 @@ public class WAVLTree {
         return this.actionsCount.getCount();
     }
 
+    /**
+     * Set the min and max nodes on insert
+     * <p>
+     * Complexity O(1)
+     */
     private void setSpecialNodes(WAVLNode newNode) {
         if (this.maxNode == null) {
             this.maxNode = newNode;
@@ -115,6 +130,9 @@ public class WAVLTree {
      * the tree must remain valid (keep its invariants).
      * returns the number of rebalancing operations, or 0 if no rebalancing operations were needed.
      * returns -1 if an item with key k was not found in the tree.
+     * <p>
+     * Complexity W.C. O(logn)
+     * Complexity Amortized O(1)
      */
     public int delete(int k) {
         actionsCount.clear();
@@ -188,6 +206,9 @@ public class WAVLTree {
 
     }
 
+    /**
+     * Complexity O(logn) - calls `getSuccessor`
+     */
     private void replaceWithSuccessor(WAVLNode nodeToDelete) {
         WAVLNode successor = nodeToDelete.getSuccessor();
 
@@ -205,13 +226,13 @@ public class WAVLTree {
             replaceUnaryNode(nodeToDelete.getParent(), nodeToDelete, successor);
         }
 
-        successor.rank = nodeToDelete.getRank(); // TODO: should increase action count?
+        successor.rank = nodeToDelete.getRank();
         successor.setRight(nodeToDelete.getRight());
         successor.setLeft(nodeToDelete.getLeft());
 
         if (successorChild != EXTERNAL_NODE) {
             replaceUnaryNode(successorChild, EXTERNAL_NODE, nodeToDelete);
-            successorChild.rank = successorChild.getRank() + 1; // TODO: should increase action count?
+            successorChild.rank = successorChild.getRank() + 1;
         } else {
             if (successorParent == nodeToDelete) {
                 replaceUnaryNode(successor, EXTERNAL_NODE, nodeToDelete);
@@ -223,6 +244,9 @@ public class WAVLTree {
         nodeToDelete.setRight(EXTERNAL_NODE);
     }
 
+    /**
+     * Complexity O(1)
+     */
     private void setRoot(WAVLNode node) {
         this.root = node;
         if (node != null) {
@@ -230,7 +254,9 @@ public class WAVLTree {
         }
     }
 
-
+    /**
+     * Complexity O(1)
+     */
     private void replaceUnaryNode(WAVLNode parent, WAVLNode nodeToRemove, WAVLNode node) {
         if (parent.getLeft() == nodeToRemove) {
             parent.setLeft(node);
@@ -239,6 +265,10 @@ public class WAVLTree {
         }
     }
 
+    /**
+     * Delete a leaf node
+     * Complexity O(1)
+     */
     private void removeLeaf(WAVLNode parent, WAVLNode nodeToDelete) {
         if (parent.getLeft() == nodeToDelete) {
             parent.setLeft(EXTERNAL_NODE);
@@ -247,6 +277,11 @@ public class WAVLTree {
         }
     }
 
+    /**
+     * @return A node of `parent` which is not `node`
+     * <p>
+     * Complexity O(1)
+     */
     private WAVLNode getOtherChild(WAVLNode parent, WAVLNode node) {
         if (parent.getRight() == node) {
             return parent.getLeft();
@@ -260,6 +295,8 @@ public class WAVLTree {
      * <p>
      * Returns the info of the item with the smallest key in the tree,
      * or null if the tree is empty
+     * <p>
+     * Complexity O(1)
      */
     public String min() {
         if (this.minNode == null) {
@@ -273,6 +310,8 @@ public class WAVLTree {
      * <p>
      * Returns the info of the item with the largest key in the tree,
      * or null if the tree is empty
+     * <p>
+     * Complexity O(1)
      */
     public String max() {
         if (this.maxNode == null) {
@@ -286,6 +325,8 @@ public class WAVLTree {
      * <p>
      * Returns a sorted array which contains all keys in the tree,
      * or an empty array if the tree is empty.
+     * <p>
+     * Complexity O(n)
      */
     public int[] keysToArray() {
         if (empty()) {
@@ -303,6 +344,8 @@ public class WAVLTree {
      * Returns an array which contains all info in the tree,
      * sorted by their respective keys,
      * or an empty array if the tree is empty.
+     * <p>
+     * Complexity O(n)
      */
     public String[] infoToArray() {
         if (empty()) {
@@ -314,6 +357,9 @@ public class WAVLTree {
         return arr;
     }
 
+    /**
+     * Complexity O(n)
+     */
     private int inOrderKey(WAVLNode node, int[] arr, int index) {
         if (node.getLeft() != EXTERNAL_NODE) {
             index = inOrderKey(node.getLeft(), arr, index);
@@ -326,6 +372,9 @@ public class WAVLTree {
         return index;
     }
 
+    /**
+     * Complexity O(1)
+     */
     private int inOrderInfo(WAVLNode node, String[] arr, int index) {
         if (node.getLeft() != EXTERNAL_NODE) {
             index = inOrderInfo(node.getLeft(), arr, index);
@@ -342,6 +391,8 @@ public class WAVLTree {
      * public int size()
      * <p>
      * Returns the number of nodes in the tree.
+     * <p>
+     * Complexity O(1)
      */
     public int size() {
         return this.getRoot() == null ? 0 : this.getRoot().getSubtreeSize();
@@ -351,6 +402,8 @@ public class WAVLTree {
      * public WAVLNode getRoot()
      * <p>
      * Returns the root WAVL node, or null if the tree is empty
+     * <p>
+     * Complexity O(1)
      */
     public WAVLNode getRoot() {
         return this.root;
@@ -363,6 +416,8 @@ public class WAVLTree {
      * Example 1: select(1) returns the value of the node with minimal key
      * Example 2: select(size()) returns the value of the node with maximal key
      * Example 3: select(2) returns the value 2nd smallest minimal node, i.e the value of the node minimal node's successor
+     * <p>
+     * Complexity W.C. O(log(i))
      */
     public String select(int i) {
         if (empty()) {
@@ -378,33 +433,38 @@ public class WAVLTree {
             while (node.getSubtreeSize() < i) {
                 node = node.getParent();
             }
-            node = selectHelp(node, i);
+            node = selectRec(node, i);
         } else {
             node = this.maxNode;
             int treeSize = this.size();
             while (i <= treeSize - node.getSubtreeSize()) {
                 node = node.getParent();
             }
-            node = selectHelp(node, i - (treeSize - node.getSubtreeSize()));
+            node = selectRec(node, i - (treeSize - node.getSubtreeSize()));
 
         }
         return node.getValue();
     }
 
-    private WAVLNode selectHelp(WAVLNode x, int i) {
+    /**
+     * Complexity W.C. O(log(k)) whereas k is the size of `x` subtree
+     */
+    private WAVLNode selectRec(WAVLNode x, int i) {
         int r = x.getLeft().getSubtreeSize();
         if (i - 1 == r) {
             return x;
         } else if (i - 1 < r) {
-            return selectHelp(x.getLeft(), i);
+            return selectRec(x.getLeft(), i);
         } else {
-            return selectHelp(x.getRight(), i - r - 1);
+            return selectRec(x.getRight(), i - r - 1);
         }
 
     }
 
     /**
      * @return The location of the node or the location it should be inserted in
+     * <p>
+     * Complexity W.C. O(logn)
      */
     private WAVLNode getClosestNode(int key) {
         if (empty()) {
@@ -439,6 +499,11 @@ public class WAVLTree {
         }
     }
 
+    /**
+     * Balance tree after deleting a node
+     * <p>
+     * Complexity W.C. O(logn)
+     */
     private void deleteBalanceTree(WAVLNode node) {
         if (isLegalState(node)) {
             if (node != null) {
@@ -486,6 +551,11 @@ public class WAVLTree {
         node.updateSubTreeSizeUp();
     }
 
+    /**
+     * Case 3 delete
+     * <p>
+     * Complexity O(1)
+     */
     private void deleteSingleRotate(WAVLNode node, WAVLNode otherChild) {
         singleRotate(node, otherChild);
 
@@ -498,6 +568,11 @@ public class WAVLTree {
         }
     }
 
+    /**
+     * Case 4 delete
+     * <p>
+     * Complexity O(1)
+     */
     private void deleteDoubleRotate(WAVLNode node, WAVLNode otherChild) {
         WAVLNode grandChild = doubleRotate(node, otherChild);
         node.setRank(node.getRank() - 2);
@@ -505,6 +580,11 @@ public class WAVLTree {
         grandChild.setRank(grandChild.getRank() + 2);
     }
 
+    /**
+     * Balance the tree after inserting a node
+     * <p>
+     * Complexity W.C. O(logn)
+     */
     private void insertBalanceTree(WAVLNode node) {
         boolean isLegalInsertState = this.getRoot() == node || node.getRank() < node.getParent().getRank();
         if (isLegalInsertState) {
@@ -524,6 +604,9 @@ public class WAVLTree {
         insertRotate(parent, node);
     }
 
+    /**
+     * Complexity O(1)
+     */
     private boolean isLegalState(WAVLNode node) {
         if (empty() || node == null) {
             return true;
@@ -535,6 +618,9 @@ public class WAVLTree {
         return leftChildDiff > 0 && rightChildDiff > 0 && leftChildDiff < 3 & rightChildDiff < 3;
     }
 
+    /**
+     * Complexity O(1)
+     */
     private boolean isSingleDemoteState(WAVLNode node) {
         int leftChildDiff = node.getLeftRankDiff();
         int rightChildDiff = node.getRightRankDiff();
@@ -543,25 +629,33 @@ public class WAVLTree {
                 (leftChildDiff == 2 && rightChildDiff == 3);
     }
 
+    /**
+     * Complexity O(1)
+     */
     private void insertRotate(WAVLNode parent, WAVLNode node) {
         boolean isRightChild = parent.getRight() == node;
 
         if (isRightChild) {
             if (node.getLeftRankDiff() == 2) {
-                insertSingleRotate(parent, node);
+                insertSingleRotate(parent, node); // Case 2
             } else {
-                insertDoubleRotate(parent, node);
+                insertDoubleRotate(parent, node); // Case 3
             }
         } else {
             if (node.getRightRankDiff() == 2) {
-                insertSingleRotate(parent, node);
+                insertSingleRotate(parent, node); // Case 2
             } else {
-                insertDoubleRotate(parent, node);
+                insertDoubleRotate(parent, node); // Case 3
             }
         }
     }
 
-    private void insertDoubleRotate(WAVLNode grandParent, WAVLNode parent) {
+    /**
+     * Case 3 insert
+     * <p>
+     * Complexity O(1)
+     */
+    private void insertDoubleRotate(WAVLNode grandParent, WAVLNode parent) { // Case 3 insert
         WAVLNode child = doubleRotate(grandParent, parent);
 
         child.setRank(child.getRank() + 1);
@@ -571,6 +665,11 @@ public class WAVLTree {
         parent.updateSubTreeSizeUp();
     }
 
+    /**
+     * Case 2 insert
+     * <p>
+     * Complexity O(1)
+     */
     private void insertSingleRotate(WAVLNode parent, WAVLNode node) {
         singleRotate(parent, node);
         parent.setRank(parent.getRank() - 1);
@@ -578,6 +677,11 @@ public class WAVLTree {
         node.updateSubTreeSizeUp();
     }
 
+    /**
+     * Single rotate the given nodes, rotate both right and left
+     * <p>
+     * Complexity O(1)
+     */
     private void singleRotate(WAVLNode parent, WAVLNode node) {
         actionsCount.addAction();
 
@@ -611,6 +715,15 @@ public class WAVLTree {
         node.calculateSize();
     }
 
+    /**
+     * Double rotate the given nodes, rotate both right and left
+     *
+     * @param grandParent The parent node of the second rotation
+     * @param parent      The parent node of the first rotation
+     * @return the child
+     * <p>
+     * Complexity O(1)
+     */
     private WAVLNode doubleRotate(WAVLNode grandParent, WAVLNode parent) {
         if (grandParent.getRight() == parent) {
             WAVLNode child = parent.getLeft();
@@ -719,9 +832,10 @@ public class WAVLTree {
 
 
         /**
-         * Gets the successor
-         *
          * @return The successor of the node
+         * <p>
+         * Complexity W.C. O(logn)
+         * Complexity Amortized O(1)
          */
         private WAVLNode getSuccessor() {
             WAVLNode node = this;
@@ -750,9 +864,10 @@ public class WAVLTree {
 
 
         /**
-         * Gets the predecessor
-         *
          * @return The predecessor of this node
+         * <p>
+         * Complexity W.C. O(logn)
+         * Complexity Amortized O(1)
          */
         private WAVLNode getPredecessor() {
             WAVLNode node = this;
@@ -780,13 +895,22 @@ public class WAVLTree {
             return node;
         }
 
-
+        /**
+         * Calculate the subtree size using the node's children
+         * <p>
+         * Complexity O(1)
+         */
         private void calculateSize() {
             if (this != EXTERNAL_NODE) {
                 this.subTreeSize = this.getRight().getSubtreeSize() + this.getLeft().getSubtreeSize() + 1;
             }
         }
 
+        /**
+         * Call `calculateSize` from this node to the root
+         * <p>
+         * Complexity W.C. O(logn)
+         */
         public void updateSubTreeSizeUp() {
             WAVLNode next = this;
             while (next != null) {
@@ -797,6 +921,9 @@ public class WAVLTree {
 
     }
 
+    /**
+     * Public class ActionCount
+     */
     public class ActionsCount {
         private int count = 0;
 
