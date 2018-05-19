@@ -378,17 +378,20 @@ public class WAVLTree {
             while (node.getSubtreeSize() < i) {
                 node = node.getParent();
             }
+            node = selectHelp(node, i);
         } else {
-            node = this.getRoot();
+            node = this.maxNode;
+            int treeSize = this.size();
+            while (i <= treeSize - node.getSubtreeSize()) {
+                node = node.getParent();
+            }
+            node = selectHelp(node, i - (treeSize - node.getSubtreeSize()));
+
         }
-        node = selectHelp(node, i);
-        //for (int j = 1; j < i; j++) {
-        //    node = node.getSuccessor();
-        //    }
-        return node.getValue(); //TODO: make O(logk)
+        return node.getValue();
     }
 
-    public WAVLNode selectHelp(WAVLNode x, int i) {
+    private WAVLNode selectHelp(WAVLNode x, int i) {
         int r = x.getLeft().getSubtreeSize();
         if (i - 1 == r) {
             return x;

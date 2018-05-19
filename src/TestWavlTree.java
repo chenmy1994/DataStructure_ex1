@@ -460,7 +460,6 @@ public class TestWavlTree {
             tree.insert(i, Integer.toString(i));
         }
         for (int i = 1; i < 100; i++) {
-            System.out.println(i);
             Assert.assertEquals(Integer.toString(i), tree.select(i));
         }
     }
