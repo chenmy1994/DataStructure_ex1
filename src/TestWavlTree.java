@@ -422,28 +422,28 @@ public class TestWavlTree {
     @Test
     public void test25() {
         WAVLTree tree = new WAVLTree();
-        tree.insert(358,"");
-        tree.insert(2452,"");
-        tree.insert(1581,"");
-        tree.insert(2446,"");
-        tree.insert(2151,"");
+        tree.insert(358, "");
+        tree.insert(2452, "");
+        tree.insert(1581, "");
+        tree.insert(2446, "");
+        tree.insert(2151, "");
         tree.insert(1371, "");
-        tree.insert(579,"");
+        tree.insert(579, "");
         tree.delete(1581);
-        tree.insert(1357,"");
+        tree.insert(1357, "");
         tree.delete(358);
-        tree.insert(1384,"");
+        tree.insert(1384, "");
         tree.delete(2446);
         tree.delete(2151);
-        tree.insert(2442,"");
-        tree.insert(945,"");
-        tree.insert(3981,"");
-        tree.insert(922,"");
-        tree.insert(2826,"");
+        tree.insert(2442, "");
+        tree.insert(945, "");
+        tree.insert(3981, "");
+        tree.insert(922, "");
+        tree.insert(2826, "");
         tree.delete(579);
         tree.delete(1384);
-        tree.insert(1541,"");
-        tree.insert(1611,"");
+        tree.insert(1541, "");
+        tree.insert(1611, "");
         tree.delete(1371);
         tree.delete(3981);
         tree.delete(1611);
@@ -453,6 +453,17 @@ public class TestWavlTree {
         assertNodeSize(tree.getRoot());
     }
 
+    @Test
+    public void testSelect() {
+        WAVLTree tree = new WAVLTree();
+        for (int i = 1; i < 100; i++) {
+            tree.insert(i, Integer.toString(i));
+        }
+        for (int i = 1; i < 100; i++) {
+            System.out.println(i);
+            Assert.assertEquals(Integer.toString(i), tree.select(i));
+        }
+    }
 
     @Test
     public void testSingleRotate() {
