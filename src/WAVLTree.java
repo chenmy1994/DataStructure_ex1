@@ -373,7 +373,7 @@ public class WAVLTree {
     }
 
     /**
-     * Complexity O(1)
+     * Complexity O(n)
      */
     private int inOrderInfo(WAVLNode node, String[] arr, int index) {
         if (node.getLeft() != EXTERNAL_NODE) {
@@ -412,7 +412,7 @@ public class WAVLTree {
     /**
      * public int select(int i)
      * <p>
-     * Returns the value of the i'th smallest key (return -1 if tree is empty)
+     * Returns the value of the i'th smallest key (return null if tree is empty)
      * Example 1: select(1) returns the value of the node with minimal key
      * Example 2: select(size()) returns the value of the node with maximal key
      * Example 3: select(2) returns the value 2nd smallest minimal node, i.e the value of the node minimal node's successor
